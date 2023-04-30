@@ -1,0 +1,20 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+  username: admin
+  password:
+
+development:
+  <<: *default
+  database: ruby
+
+test:
+  <<: *default
+  database: ruby_test
+
+production:
+  <<: *default
+  database: ruby
+  username: admin
+  password:
