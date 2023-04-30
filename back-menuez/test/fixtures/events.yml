@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  location: MyString
+  open_at: 2023-04-28 15:43:05
+  close_at: 2023-04-28 15:43:05
+  description: MyText
+  date: 2023-04-28 15:43:05
+  owner: one
+
+two:
+  name: MyString
+  location: MyString
+  open_at: 2023-04-28 15:43:05
+  close_at: 2023-04-28 15:43:05
+  description: MyText
+  date: 2023-04-28 15:43:05
+  owner: two

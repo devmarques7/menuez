@@ -42,8 +42,12 @@ class EventsController < ApplicationController
   def register_tickets
     event_id = params[:id]
     @event = Event.find(event_id)
-
-
+    @tickets = Ticket.where(event_id: event_id)
+  
+    @tickets.each do |ticket|
+      @event.tickets.create(ticket_type: ticket.ticket_type, available: ticket.available)
+    end
+  
     if @event.save
       render json: @event.as_json(include: :tickets)
     else
