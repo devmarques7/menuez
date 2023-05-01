@@ -5,7 +5,7 @@ class TicketsController < ApplicationController
   def index
     @tickets = Ticket.all
 
-    render json: @tickets
+    render json: @tickets.as_json(include: { event: { only: [:id, :name, :location, :description, :close_at,:open_at,:date] } })
   end
 
   # GET /tickets/1
@@ -26,6 +26,7 @@ class TicketsController < ApplicationController
 
   # PATCH/PUT /tickets/1
   def update
+    params.require(:ticket).permit(:ticket_type, :available, :expired_at, :event_id, :user_id)
     if @ticket.update(ticket_params)
       render json: @ticket
     else
@@ -38,6 +39,25 @@ class TicketsController < ApplicationController
     @ticket.destroy
   end
 
+
+  def events_inform
+    event_id = params[:id]
+    @event = Event.find(event_id)
+  
+    if @event.save
+      render json: @event.as_json(include: { owner: { only: [:id, :name, :email] }, tickets: { only: [:id, :ticket_type, :available] } })
+    else
+      render json: @event.errors, status: :unprocessable_entity
+    end
+  end
+
+  def ticktes_category
+    ticket_type = params[:type]
+    @tickets = Ticket.where(ticket_type: ticket_type)
+
+    return render json:  @tickets.as_json(include: :event)
+  end
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_ticket

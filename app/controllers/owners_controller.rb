@@ -39,6 +39,17 @@ class OwnersController < ApplicationController
     @owner.destroy
   end
 
+  def owners_inform
+    owner_id = params[:id]
+    @owner = Owner.find(owner_id)
+  
+    if @owner.save
+      render json: @owner.as_json(include: { events: { only: [:id, :name, :location, :description, :close_at,:open_at,:date] } })
+    else
+      render json: @owner.errors, status: :unprocessable_entity
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_owner

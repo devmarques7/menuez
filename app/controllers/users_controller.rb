@@ -38,6 +38,17 @@ class UsersController < ApplicationController
     @user.destroy
   end
 
+  def users_inform
+    user_id = params[:id]
+    @user = User.find(user_id)
+  
+    if @user.save
+      render json: @user.as_json(include: { tickets: { only: [:id, :ticket_type, :available] } })
+    else
+      render json: @user.errors, status: :unprocessable_entity
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
