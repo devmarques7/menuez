@@ -12,7 +12,7 @@
 
 <ol>
   <li>Kloon deze repository op uw lokale machine</li>
-  <pre><code>git clone https://github.com/jouw-gebruikersnaam/jouw-project.git</code></pre>
+  <pre><code>git clone git@github.com:devmarques7/menuez.git</code></pre>
 </ol>
 
 <h2>Backend (Ruby on Rails)</h2>
