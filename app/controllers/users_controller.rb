@@ -48,4 +48,21 @@ class UsersController < ApplicationController
     def user_params
       params.require(:user).permit(:name, :email, :phone)
     end
+
+
+  #   def index
+  #     @owners = Owner.all
+  #     @events = Event.all
+  
+  #     render json: { owners: @owners, events: @events }
+  #   end
+  
+  #   # GET /store/events/:id
+  #   def events
+  #     @owners = Owner.find(params[:id])
+  #     @events = @owners.events
+  #     render json: @events
+  #   end
+  
+
 end
