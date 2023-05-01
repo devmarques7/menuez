@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
-import Header from "./components/Header";
+import CarouselServices from "./components/CarouselServices";
+import Nav from "./components/NavBar";
 
 const ws = new WebSocket("ws://localhost:3000/cable");
 
@@ -33,10 +34,8 @@ function App() {
       {/* {messages.map((msg) => {
         return <p key={msg.id}>{msg.body}</p>;
       })} */}
-      <Header>
-        <h3>Store</h3>
-        <button>Buy</button>
-      </Header>
+      <Nav color={"var(--nav-background)"} />
+      <CarouselServices />
     </div>
   );
 }
