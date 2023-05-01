@@ -39,10 +39,9 @@ class EventsController < ApplicationController
     @event.destroy
   end
 
-  def register_tickets
+  def events_inform
     event_id = params[:id]
     @event = Event.find(event_id)
-    @tickets = Ticket.where(event_id: event_id)
   
     if @event.save
       render json: @event.as_json(include: { owner: { only: [:id, :name, :email] }, tickets: { only: [:id, :ticket_type, :available] } })
