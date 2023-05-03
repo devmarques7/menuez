@@ -47,16 +47,6 @@ class StoresController < ApplicationController
   end
 
 
-  def events_inform
-    event_id = params[:id]
-    @event = Event.find(event_id)
-  
-    if @event.save
-      render json: @event.as_json(include: { owner: { only: [:id, :name, :email] }, tickets: { only: [:id, :ticket_type, :available] } })
-    else
-      render json: @event.errors, status: :unprocessable_entity
-    end
-  end
 
   private
     # Use callbacks to share common setup or constraints between actions.
