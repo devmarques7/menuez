@@ -5,7 +5,7 @@ class EventsController < ApplicationController
   def index
     @events = Event.all
 
-    render json: @events
+    render json: @events.as_json(include: { owner: { only: [:id, :name, :email] }, tickets: { only: [:id, :ticket_type, :available] } })
   end
 
   # GET /events/1
@@ -43,7 +43,7 @@ class EventsController < ApplicationController
     event_id = params[:id]
     @event = Event.find(event_id)
   
-    if @event.save
+    if @event
       render json: @event.as_json(include: { owner: { only: [:id, :name, :email] }, tickets: { only: [:id, :ticket_type, :available] } })
     else
       render json: @event.errors, status: :unprocessable_entity
@@ -58,6 +58,6 @@ class EventsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def event_params
-      params.require(:event).permit(:name, :location, :open_at, :close_at, :description, :date, :owner_id)
+      params.require(:event).permit(:name, :location, :open_at, :close_at, :description, :date, :owner_id, :img_cover_event, :category, :sold_ou)
     end
 end
