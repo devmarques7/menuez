@@ -22,11 +22,7 @@ export interface ICarousel {
     liked: false;
     alt: string;
   }[];
-  publicPhotos?: {
-    img: string;
-    description: string;
-    title: string;
-  }[];
+  publicPhotos?: IEvent[];
   title?: string;
   subtitle?: string;
   arrow?: boolean;

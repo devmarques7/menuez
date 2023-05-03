@@ -1,26 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import Carousel from "../utils/SimpleCarousel";
-
-const PHOTOS = [
-  {
-    img: "./events/eletronic.jpg",
-    description: "Best Eletronic party event",
-    title: "Eletronic Event",
-  },
-  {
-    img: "./events/teather.jpg",
-    description: "Best teather event ever",
-    title: "Teather show",
-  },
-  {
-    img: "./events/mindset.jpg",
-    description: "Growing mind",
-    title: "Mindset",
-  },
-];
+import { AppContext } from "../../contexts/AppContext";
 
 const CarouselService = () => {
-  return <Carousel publicPhotos={PHOTOS}></Carousel>;
+  const { events } = useContext(AppContext);
+
+  return <Carousel publicPhotos={events}></Carousel>;
 };
 
 export default CarouselService;

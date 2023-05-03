@@ -61,12 +61,29 @@ const StyledCarousel = styled.div<IStyledCarousel>`
 
       > div {
         position: relative;
-        bottom: 150px;
+        bottom: 200px;
         left: 10px;
         width: 15vw;
         max-width: 500px;
         min-width: 150px;
         height: 20px;
+      }
+
+      .sold_out {
+        position: relative;
+        bottom: 210px;
+        left: 10px;
+        width: 15vw;
+        max-width: 500px;
+        min-width: 150px;
+        height: 20px;
+
+        font: 400 20px/42px "Nats", sans-serif;
+
+        font-size: 25px;
+        color: var(--whitelish-grey);
+
+        background-color: red;
       }
     }
   }
