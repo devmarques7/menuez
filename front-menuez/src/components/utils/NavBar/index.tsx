@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { Container, MenuMobile, NavIcon, NavList } from "./style";
 import NavBarButton from "../NavBarButton";
-import Link from "../utils/Link";
+import { AppContext } from "../../../contexts/AppContext";
+import { Link } from "react-router-dom";
 
 const HEADER = {
   ICON: "/favico.png",
@@ -19,6 +20,7 @@ const Nav = ({ color = "black", title = false }: INav): JSX.Element => {
   const { ICON, NAVBAR, LANGUAGES } = HEADER;
   const [menu, setMenu] = useState(false);
   const handleMenu = () => setMenu(!menu);
+  const { cart } = useContext(AppContext);
 
   useEffect(() => {
     menu
@@ -30,19 +32,19 @@ const Nav = ({ color = "black", title = false }: INav): JSX.Element => {
     switch (link) {
       case "Work":
         return (
-          <Link key={link} id="links" href={`/${link}`}>
+          <Link key={link} id="links" to={`/${link}`}>
             {`${link}.`}
           </Link>
         );
       case "Home":
         return (
-          <Link key={link} id="links" href={`/`}>
+          <Link key={link} id="links" to={`/`}>
             {`${link}.`}
           </Link>
         );
       default:
         return (
-          <Link key={link} id="links" href={`/#${link}`}>
+          <Link key={link} id="links" to={`/#${link}`}>
             {`${link}.`}
           </Link>
         );
@@ -57,7 +59,15 @@ const Nav = ({ color = "black", title = false }: INav): JSX.Element => {
         <div className="container links">
           <NavList>{NAVBAR.map((link) => conditionalRender(link))}</NavList>
           {title && <h2>seven</h2>}
-          <button className="buyer">Buy</button>
+          <div className="cart">
+            {cart.length > 0 && <span className="notify point"></span>}
+            {cart.length > 0 && (
+              <span className="notify number">{cart.length}</span>
+            )}
+            <Link className="buyer" to={`/cart`}>
+              Buy
+            </Link>
+          </div>
         </div>
         <NavBarButton
           className="navBarButton"

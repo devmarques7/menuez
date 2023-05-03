@@ -4,6 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import AppContextProvider from "./contexts/AppContext";
 import GlobalStyles from "./styles/GlobalStyles";
 import { MyRoutes } from "./routers";
+import App from "./App";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -13,7 +14,9 @@ root.render(
     <BrowserRouter>
       <AppContextProvider>
         <GlobalStyles />
-        <MyRoutes />
+        <App>
+          <MyRoutes />
+        </App>
       </AppContextProvider>
     </BrowserRouter>
   </React.StrictMode>

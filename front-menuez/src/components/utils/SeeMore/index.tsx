@@ -1,9 +1,12 @@
+import { useContext } from "react";
 import Link from "../Link";
 import { Container } from "./style";
 import { AiOutlineArrowRight } from "react-icons/ai";
+import { AppContext } from "../../../contexts/AppContext";
 
 const SeeMore = ({ content, size, icons }: ISeeMoreProps): JSX.Element => {
   const { title, description, link } = content;
+  const { availableEvents } = useContext(AppContext);
 
   return (
     <Container size={size}>
@@ -14,7 +17,16 @@ const SeeMore = ({ content, size, icons }: ISeeMoreProps): JSX.Element => {
 
       <div className="info sub-container">
         <p className="info description">{description}</p>
-        <Link key="link" id="link" href={link} className="info link">
+        <Link
+          key="link"
+          id="link"
+          href={link}
+          className="info link"
+          onClick={(event) => {
+            event.preventDefault();
+            availableEvents(link);
+          }}
+        >
           {`Select tickets`} <AiOutlineArrowRight color="var(--red)" />
         </Link>
       </div>

@@ -1,8 +1,9 @@
-import StyledCarousel from "./style";
-import { useRef } from "react";
+import StyledCarousel, { StyledImage } from "./style";
+import { useContext, useRef } from "react";
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
 import { ICarousel } from "../../../interfaces/ICarousel";
 import SeeMore from "../SeeMore";
+import { AppContext } from "../../../contexts/AppContext";
 
 const Carousel = ({
   photos,
@@ -22,7 +23,7 @@ const Carousel = ({
     (publicPhotos && publicPhotos.length === 0) ? (
     <h1>Carregando...</h1>
   ) : (
-    <StyledCarousel id={id} imgHeight={imgHeight}>
+    <StyledCarousel id={id}>
       {arrow && (
         <button onClick={scrollLeft} className="button-left">
           <AiOutlineArrowLeft />
@@ -36,7 +37,12 @@ const Carousel = ({
             <section className="item" key={index}>
               <a href="https://www.google.com/" target="_blank" id={photo.id}>
                 {photo.img_cover_event ? (
-                  <img src={photo.img_cover_event} alt="photo from gallery" />
+                  <StyledImage
+                    src={photo.img_cover_event}
+                    alt="photo from gallery"
+                    imgHeight={imgHeight}
+                    sold_out={photo.sold_out}
+                  />
                 ) : (
                   <img
                     src="./events/img-notfound.png"
@@ -49,7 +55,7 @@ const Carousel = ({
                 content={{
                   description: photo.description,
                   title: photo.name,
-                  link: "https://www.google.com/",
+                  link: `/tickets/${photo.id}`,
                 }}
                 size="default"
               />

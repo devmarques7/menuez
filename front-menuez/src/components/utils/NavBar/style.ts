@@ -36,17 +36,53 @@ export const Container = styled.nav<IStyledContainer>`
     display: flex;
     gap: 40px;
 
-    .buyer {
-      padding: 5px 20px;
+    .cart {
+      display: flex;
+      align-items: center;
 
-      color: var(--red);
+      gap: 10px;
+      .buyer {
+        padding: 5px 20px;
 
-      border: none;
-      border-radius: 10px;
+        color: var(--red);
 
-      :hover {
-        transition: 0.2s all ease-in-out;
-        transform: scale(1.05);
+        background-color: #fff;
+        font: var(--ROBOTO-12px);
+
+        border: none;
+        border-radius: 10px;
+
+        :hover {
+          transition: 0.2s all ease-in-out;
+          transform: scale(1.05);
+        }
+      }
+
+      .notify.point {
+        position: relative;
+        left: 90%;
+
+        bottom: 11px;
+
+        z-index: 1;
+
+        border-radius: 50%;
+
+        width: 10px;
+        height: 10px;
+
+        background-color: var(--red);
+      }
+      .notify.number {
+        text-align: center;
+        border-radius: 50%;
+
+        color: #fff;
+
+        width: 25px;
+        height: 25px;
+
+        font: var(--ROBOTO-10px);
       }
     }
 

@@ -1,10 +1,11 @@
 import styled from "styled-components";
 
-interface IStyledCarousel {
+interface IImageStyle {
   imgHeight: string;
+  sold_out: boolean;
 }
 
-const StyledCarousel = styled.div<IStyledCarousel>`
+const StyledCarousel = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -47,17 +48,6 @@ const StyledCarousel = styled.div<IStyledCarousel>`
       padding: 24px;
       border-radius: 8px;
       scroll-snap-align: start;
-
-      img {
-        width: 20vw;
-        max-width: 500px;
-        min-width: 235px;
-        height: ${(props) => props.imgHeight};
-        object-fit: cover;
-        cursor: pointer;
-
-        border-radius: 20px;
-      }
 
       > div {
         position: relative;
@@ -215,6 +205,19 @@ const StyledCarousel = styled.div<IStyledCarousel>`
       right: 250px;
     }
   }
+`;
+
+export const StyledImage = styled.img<IImageStyle>`
+  width: 20vw;
+  max-width: 500px;
+  min-width: 235px;
+  height: ${(props) => props.imgHeight};
+  object-fit: cover;
+  cursor: pointer;
+
+  border-radius: 20px;
+
+  opacity: ${(props) => (props.sold_out ? "50%" : "100%")};
 `;
 
 export default StyledCarousel;

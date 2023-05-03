@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@hookform/error-message": "^2.0.1",
+    "@hookform/resolvers": "^3.1.0",
     "@rails/actioncable": "^7.0.4-3",
     "@types/rails__actioncable": "^6.1.6",
     "axios": "^1.4.0",
@@ -13,6 +15,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.43.5",
+    "react-icon": "^1.0.0",
     "react-icons": "^4.8.0",
     "react-router-dom": "^6.10.0",
     "react-scripts": "5.0.1",
@@ -23,7 +26,8 @@
     "uuid": "^9.0.0",
     "web-vitals": "^2.1.0",
     "webpack": "^5.81.0",
-    "webpack-cli": "^5.0.2"
+    "webpack-cli": "^5.0.2",
+    "yup": "^1.1.1"
   },
   "scripts": {
     "start": "react-scripts start",

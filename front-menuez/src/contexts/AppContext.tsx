@@ -1,39 +1,34 @@
-import axios from "axios";
 import { ReactNode, createContext, useEffect, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
 import menuezApi from "../axios/config";
+import { IEvent } from "../interfaces/IEvents";
+import { NavigateFunction, useNavigate } from "react-router-dom";
+
 interface IAppContext {
   events: IEvent[];
+  availableEvents: (link: string) => void;
+  eventTicket: IEvent;
+  setCart: React.Dispatch<React.SetStateAction<ITicket[]>>;
+  cart: ITicket[];
+  navigate: NavigateFunction;
+  setAmount: React.Dispatch<React.SetStateAction<number>>;
+  amount: number;
+  validateLine: (event_id: string) => void;
+  showModal: boolean;
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+  queue: number;
+  event_id: string;
+}
+
+export interface ITicket {
+  available: true;
+  id: string;
+  ticket_type: string;
+  event_id: string;
+  price: number;
 }
 
 interface ContextsProps {
   children: ReactNode;
-}
-
-export interface IEvent {
-  id: string;
-  name: string;
-  location: string;
-  open_at: string;
-  close_at: string;
-  description: string;
-  date: string;
-  owner_id: string;
-  created_at: string;
-  updated_at: string;
-  img_cover_event: string;
-  category: string;
-  sold_out: boolean;
-  owner: {
-    id: string;
-    name: string;
-    email: string;
-  };
-  tickets: {
-    id: string;
-    ticket_type: string;
-    available: boolean;
-  }[];
 }
 
 // const ws = new WebSocket("ws://localhost:3000/cable");
@@ -41,8 +36,15 @@ export interface IEvent {
 export const AppContext = createContext<IAppContext>({} as IAppContext);
 
 const AppContextProvider = ({ children }: ContextsProps) => {
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState<ITicket[]>([]);
   const [events, setEvents] = useState<IEvent[]>([]);
+  const [eventTicket, setEventTicket] = useState<IEvent>({} as IEvent);
+  const [showModal, setShowModal] = useState(false);
+  const [queue, setQueue] = useState(0);
+  const [event_id, setEvent_id] = useState("");
+
+  const [amount, setAmount] = useState(0);
+  const navigate = useNavigate();
 
   // ws.onopen = () => {
   //   console.log("Connection established to WS server");
@@ -60,6 +62,7 @@ const AppContextProvider = ({ children }: ContextsProps) => {
 
   useEffect(() => {
     handleEvents();
+    handleQueue();
   }, []);
 
   const handleEvents = async () => {
@@ -72,8 +75,54 @@ const AppContextProvider = ({ children }: ContextsProps) => {
     }
   };
 
+  const availableEvents = (link: string) => {
+    const event_id = link.split("/")[2];
+    setEvent_id(event_id);
+    const event = events.filter((event) => event.id === event_id)[0];
+    console.log(event.tickets);
+
+    if (event.tickets.length) {
+      setEventTicket(event);
+      validateLine(event_id);
+    }
+  };
+
+  const validateLine = (event_id: string) => {
+    if (queue > 0) {
+      setShowModal(true);
+      navigate("/wait");
+    } else {
+      navigate(`/tickets/${event_id}`);
+    }
+  };
+
+  const handleQueue = () => {
+    //Receive Informations about the sistem
+    setQueue(1);
+
+    console.log(queue);
+  };
+
   return (
-    <AppContext.Provider value={{ events }}>{children}</AppContext.Provider>
+    <AppContext.Provider
+      value={{
+        navigate,
+        events,
+        availableEvents,
+        eventTicket,
+        cart,
+        setCart,
+        amount,
+        setAmount,
+        validateLine,
+        setShowModal,
+        showModal,
+        queue,
+        event_id,
+      }}
+    >
+      {children}
+    </AppContext.Provider>
   );
 };
 
