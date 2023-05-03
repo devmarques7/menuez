@@ -1,33 +1,31 @@
-import React, { useEffect } from "react";
-import { v4 as uuidv4 } from "uuid";
+import React from "react";
+
 import CarouselServices from "./components/CarouselServices";
 import Nav from "./components/NavBar";
 
-const ws = new WebSocket("ws://localhost:3000/cable");
+import { consumer } from "./websocket";
 
 function App() {
-  ws.onopen = () => {
-    console.log("Connection established to WS server");
+  const channel = consumer.subscriptions.create("StoreChannel", {
+    connected: function () {
+      console.log("Connected to StoreChannel");
+    },
+    disconnected: function () {
+      console.log("Disconnected from StoreChannel");
+    },
+    received: function (data) {
+      console.log(`Received data: ${data}`);
+    },
+    sendHello: function () {
+      console.log("Sending hello...");
+      this.perform("hello");
+    },
 
-    ws.send(
-      JSON.stringify({
-        command: "subscribe",
-        identifier: JSON.stringify({
-          id: uuidv4(),
-          channel: "StoreConnectedChannel",
-        }),
-      })
-    );
-  };
-
-  useEffect(() => {
-    // fetchMessage();
-  }, []);
-
-  // const fetchMessage = async () => {
-  //   const response = await fetch("http://localhost:3000/stores");
-  //   const data = await response.json();
-  // };
+    eventList: function () {
+      console.log("Sending hello...");
+      this.perform("events");
+    },
+  });
 
   return (
     <div className="App">
@@ -35,6 +33,7 @@ function App() {
         return <p key={msg.id}>{msg.body}</p>;
       })} */}
       <Nav color={"var(--nav-background)"} />
+      {/* <button onClick={() => channel.eventList()}>Send Hello</button> */}
       <CarouselServices />
     </div>
   );

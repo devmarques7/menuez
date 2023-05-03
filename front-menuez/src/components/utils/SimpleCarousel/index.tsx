@@ -34,13 +34,21 @@ const Carousel = ({
         {publicPhotos?.length &&
           publicPhotos?.map((photo, index) => (
             <section className="item" key={index}>
-              <a href="https://www.google.com/" target="_blank">
-                <img src={photo.img} alt="photo from gallery" />
+              <a href="https://www.google.com/" target="_blank" id={photo.id}>
+                {photo.img_cover_event ? (
+                  <img src={photo.img_cover_event} alt="photo from gallery" />
+                ) : (
+                  <img
+                    src="./events/img-notfound.png"
+                    alt="photo from gallery"
+                  />
+                )}
               </a>
+              {photo.sold_out && <span className="sold_out">SOLD OUT</span>}
               <SeeMore
                 content={{
                   description: photo.description,
-                  title: photo.title,
+                  title: photo.name,
                   link: "https://www.google.com/",
                 }}
                 size="default"
