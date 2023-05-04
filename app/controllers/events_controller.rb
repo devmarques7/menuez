@@ -5,7 +5,7 @@ class EventsController < ApplicationController
   def index
     @events = Event.all
 
-    render json: @events.as_json(include: { owner: { only: [:id, :name, :email] }, tickets: { only: [:id, :ticket_type, :available] } })
+    render json: @events.as_json(include: { owner: { only: [:id, :name, :email] }, tickets: { only: [:id, :ticket_type, :available, :event_id, :price] } })
   end
 
   # GET /events/1
@@ -44,7 +44,7 @@ class EventsController < ApplicationController
     @event = Event.find(event_id)
   
     if @event
-      render json: @event.as_json(include: { owner: { only: [:id, :name, :email] }, tickets: { only: [:id, :ticket_type, :available] } })
+      render json: @event.as_json(include: { owner: { only: [:id, :name, :email] }, tickets: { only: [:id, :ticket_type, :available, :event_id, :price] } })
     else
       render json: @event.errors, status: :unprocessable_entity
     end
