@@ -45,7 +45,7 @@ class TicketsController < ApplicationController
     @event = Event.find(event_id)
   
     if @event.save
-      render json: @event.as_json(include: { owner: { only: [:id, :name, :email] }, tickets: { only: [:id, :ticket_type, :available] } })
+      render json: @event.as_json(include: { owner: { only: [:id, :name, :email] }, tickets: { only: [:event_id, :ticket_type, :user_id, :available, :expired_at] } })
     else
       render json: @event.errors, status: :unprocessable_entity
     end

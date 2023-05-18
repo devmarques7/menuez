@@ -2,6 +2,7 @@ import { ReactNode, createContext, useEffect, useState } from "react";
 import menuezApi from "../axios/config";
 import { IEvent } from "../interfaces/IEvents";
 import { NavigateFunction, useNavigate } from "react-router-dom";
+import { consumer } from "../websocket";
 
 interface IAppContext {
   events: IEvent[];
@@ -31,8 +32,6 @@ interface ContextsProps {
   children: ReactNode;
 }
 
-// const ws = new WebSocket("ws://localhost:3000/cable");
-
 export const AppContext = createContext<IAppContext>({} as IAppContext);
 
 const AppContextProvider = ({ children }: ContextsProps) => {
@@ -46,26 +45,35 @@ const AppContextProvider = ({ children }: ContextsProps) => {
   const [amount, setAmount] = useState(0);
   const navigate = useNavigate();
 
-  // ws.onopen = () => {
-  //   console.log("Connection established to WS server");
+  const channel = consumer.subscriptions.create("StoreChannel", {
+    connected: function () {
+      console.log("Connected to StoreChannel");
+    },
+    disconnected: function () {
+      console.log("Disconnected from StoreChannel");
+    },
+    received: function (data) {
+      console.log(`Received data: ${data}`);
 
-  //   ws.send(
-  //     JSON.stringify({
-  //       command: "subscribe",
-  //       identifier: JSON.stringify({
-  //         id: uuidv4(),
-  //         channel: "StoreChannel",
-  //       }),
-  //     })
-  //   );
-  // };
+      data.forEach((event: any) => {
+        console.log(event);
+      });
+    },
+
+    eventList: function () {
+      console.log("Requesting data...");
+      this.perform("events");
+    },
+  });
 
   useEffect(() => {
     handleEvents();
     handleQueue();
+    countDown();
   }, []);
 
   const handleEvents = async () => {
+    channel.eventList();
     try {
       await menuezApi.get("/events").then((response) => {
         setEvents(response.data);
@@ -75,11 +83,25 @@ const AppContextProvider = ({ children }: ContextsProps) => {
     }
   };
 
+  const countDown = () => {
+    let seconds = 10;
+    const intervalId = setInterval(() => {
+      seconds--;
+
+      if (seconds <= 0) {
+        clearInterval(intervalId);
+        onFinished();
+      }
+    }, 1000);
+  };
+
+  const onFinished = () => {
+    channel.eventList();
+  };
   const availableEvents = (link: string) => {
     const event_id = link.split("/")[2];
     setEvent_id(event_id);
     const event = events.filter((event) => event.id === event_id)[0];
-    console.log(event.tickets);
 
     if (event.tickets.length) {
       setEventTicket(event);
@@ -98,9 +120,7 @@ const AppContextProvider = ({ children }: ContextsProps) => {
 
   const handleQueue = () => {
     //Receive Informations about the sistem
-    setQueue(1);
-
-    console.log(queue);
+    setQueue(0);
   };
 
   return (
